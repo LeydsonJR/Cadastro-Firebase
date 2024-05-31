@@ -1,8 +1,7 @@
-// src/components/UserList.tsx
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { db } from '../firebaseConfig';
-import { collection, getDocs } from 'firebase/firestore';
+import { db } from './firebaseConfig';
+import { collection, getDocs, query, where } from 'firebase/firestore';
 
 const Container = styled.div`
   max-width: 600px;
@@ -40,12 +39,18 @@ const UserListComponent: React.FC = () => {
 
   useEffect(() => {
     const fetchUsers = async () => {
-      const querySnapshot = await getDocs(collection(db, "users"));
-      const usersData = querySnapshot.docs.map(doc => ({
-        id: doc.id,
-        ...doc.data()
-      })) as User[];
-      setUsers(usersData);
+      try {
+        // Ajuste a consulta conforme necessário
+        const q = query(collection(db, "users"), where("gender", "==", "female"));
+        const querySnapshot = await getDocs(q);
+        const usersData = querySnapshot.docs.map(doc => ({
+          id: doc.id,
+          ...doc.data()
+        })) as User[];
+        setUsers(usersData);
+      } catch (error) {
+        console.error("Error fetching users: ", error);
+      }
     };
 
     fetchUsers();

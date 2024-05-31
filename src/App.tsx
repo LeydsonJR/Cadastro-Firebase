@@ -14,11 +14,13 @@ const App: React.FC = () => {
           <ul>
             <li><Link to="/register">Cadastro</Link></li>
             <li><Link to="/login">Login</Link></li>
+            <li><Link to="/users">Users</Link></li>
           </ul>
         </Nav>
         <Routes>
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/users" element={<UserListComponent />} />
         </Routes>
       </div>
     </Router>
